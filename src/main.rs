@@ -15,9 +15,11 @@ async fn main() -> Result<(), Error> {
     let client = SampleClient::new();
     let shared_client = Arc::new(client);
 
+    let handler = create_handler(shared_client.clone());
+    let shared_handler = Arc::new(handler);
+
     let handle = |event| {
-        let client = shared_client.clone();
-        let handler = create_handler(client);
+        let handler = shared_handler.clone();
 
         async move { handler.handle_event(event).await }
     };
