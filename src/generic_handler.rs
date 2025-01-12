@@ -1,4 +1,4 @@
-use crate::sample_client::{Client, SampleClient};
+use crate::sample_client::{Client};
 use lambda_runtime::{Error, LambdaEvent};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -28,7 +28,7 @@ pub(crate) struct OutgoingMessage {
 /// - https://github.com/awslabs/aws-lambda-rust-runtime/tree/main/examples
 /// - https://github.com/aws-samples/serverless-rust-demo/
 pub(crate) async fn function_handler(
-    client: Arc<SampleClient>,
+    client: Arc<impl Client>,
     event: LambdaEvent<Value>,
 ) -> Result<OutgoingMessage, Error>
 {
