@@ -20,6 +20,7 @@ async fn main() -> Result<(), Error> {
 
     run(service_fn(|event| {
         let service = shared_service.clone();
+        println!("service cloned: {}", Arc::strong_count(&service));
 
         async move { service.handle_event(event).await }
     }))

@@ -1,13 +1,17 @@
+use std::path::Display;
 use crate::sample_client::Client;
 use lambda_runtime::{Error, LambdaEvent};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::sync::Arc;
+use std::time::Duration;
+use lambda_runtime::tracing::Dispatch;
+use lambda_runtime::tracing::log::{log, Level};
 
 /// This is a made-up example. Incoming messages come into the runtime as unicode
 /// strings in json format, which can map to any structure that implements `serde::Deserialize`
 /// The runtime pays no attention to the contents of the incoming message payload.
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize)]
 pub(crate) struct IncomingMessage {
     command: String,
 }
@@ -31,9 +35,13 @@ pub(crate) async fn function_handler(
     client: Arc<impl Client>,
     event: LambdaEvent<Value>,
 ) -> Result<OutgoingMessage, Error> {
+
     let payload: IncomingMessage = Deserialize::deserialize(event.payload).unwrap();
+    println!("payload: {:?}", payload);
     // Extract some useful info from the request
     let command = payload.command;
+
+    tokio::time::sleep(Duration::from_secs(3)).await;
 
     client.invoke();
 
