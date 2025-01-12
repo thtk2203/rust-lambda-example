@@ -45,41 +45,81 @@ payload: IncomingMessage { command: "sample-command" }
 ### 並列に実行した場合
 `-P5`で`5`並列に呼び出し
 ```shell
-$ time seq 10 | xargs -n1 -P5 -I@ cargo lambda invoke --data-file test/test-payload.json
-{"req_id":"17c245c6-3ae4-45b0-b7a5-f1978157c7b1","msg":"Command sample-command."}
-{"req_id":"44dfdc6b-219d-4bd9-87d7-620cce57605a","msg":"Command sample-command."}
-{"req_id":"58f319cc-4417-4942-a8e7-b1bc29cf6e09","msg":"Command sample-command."}
-{"req_id":"9d349f61-b5dc-4e58-abda-c11324036a58","msg":"Command sample-command."}
-{"req_id":"52d23d9e-05e7-44ba-8b0e-9a12e2bac92c","msg":"Command sample-command."}
-{"req_id":"18665515-6b74-4329-85ad-4c55fcf2e6eb","msg":"Command sample-command."}
-{"req_id":"aba83f40-a48e-4cc2-8b58-c062b147dc99","msg":"Command sample-command."}
-{"req_id":"644127ae-ed22-4754-a5c1-f89681896d9a","msg":"Command sample-command."}
-{"req_id":"a23b5d42-fd03-4fbc-b8bf-a15c1b6226b4","msg":"Command sample-command."}
-{"req_id":"9ed065d0-bcf3-4ad8-9a38-4e69a828a649","msg":"Command sample-command."}
+$ time seq 10 | xargs -n1 -P5 -I@ ./invoke.sh @
+1: Sun Jan 12 19:01:08 JST 2025
+2: Sun Jan 12 19:01:08 JST 2025
+3: Sun Jan 12 19:01:08 JST 2025
+4: Sun Jan 12 19:01:08 JST 2025
+5: Sun Jan 12 19:01:08 JST 2025
+{"req_id":"5da1bd80-2d8d-4602-94f4-4a16986712e2","msg":"Command sample-command."}
+1: Sun Jan 12 19:01:11 JST 2025
+6: Sun Jan 12 19:01:11 JST 2025
+{"req_id":"18956c44-c7fa-4284-85ba-0d19a81f108b","msg":"Command sample-command."}
+2: Sun Jan 12 19:01:14 JST 2025
+7: Sun Jan 12 19:01:14 JST 2025
+{"req_id":"a7684ba5-2552-49c6-bf76-8db64ecf3aa6","msg":"Command sample-command."}
+3: Sun Jan 12 19:01:17 JST 2025
+8: Sun Jan 12 19:01:17 JST 2025
+{"req_id":"0e5578e4-09f0-4542-a8bc-f3e22e3ae744","msg":"Command sample-command."}
+4: Sun Jan 12 19:01:20 JST 2025
+9: Sun Jan 12 19:01:20 JST 2025
+{"req_id":"a7d0074d-a8ec-4b98-9212-b6c73cc755d2","msg":"Command sample-command."}
+5: Sun Jan 12 19:01:23 JST 2025
+10: Sun Jan 12 19:01:23 JST 2025
+{"req_id":"393cde01-9f42-48c2-946b-e9ff0c5390d8","msg":"Command sample-command."}
+6: Sun Jan 12 19:01:26 JST 2025
+{"req_id":"ad5fe289-6ef2-4f44-96d2-fe710fb24c99","msg":"Command sample-command."}
+7: Sun Jan 12 19:01:29 JST 2025
+{"req_id":"b32e3e88-1dba-4933-97ba-ed3529f313ce","msg":"Command sample-command."}
+8: Sun Jan 12 19:01:32 JST 2025
+{"req_id":"e8f672f1-d662-4793-a7d0-6c184230085d","msg":"Command sample-command."}
+9: Sun Jan 12 19:01:35 JST 2025
+{"req_id":"4a457000-f132-461f-8b9d-27de21f9ab72","msg":"Command sample-command."}
+10: Sun Jan 12 19:01:38 JST 2025
 
-real    0m30.140s
-user    0m0.328s
-sys     0m0.286s
+real    0m30.166s
+user    0m0.523s
+sys     0m0.240s
 ```
 
 ### 直列に実行した場合
 `-P1`で`1`並列に呼び出し
 ```shell
-$ time seq 10 | xargs -n1 -P1 -I@ cargo lambda invoke --data-file test/test-payload.json
-{"req_id":"3ff418d6-d554-4247-9604-36119776f3f7","msg":"Command sample-command."}
-{"req_id":"0c515f65-87d0-4051-bcde-8c9b32f89cee","msg":"Command sample-command."}
-{"req_id":"a938957d-1118-4d6a-981e-eb5b1d660f8c","msg":"Command sample-command."}
-{"req_id":"8dbc98ed-6aa9-4bdd-8fbd-cc22282c366f","msg":"Command sample-command."}
-{"req_id":"cac0ee8c-d99f-4c27-b69c-e002ecc17174","msg":"Command sample-command."}
-{"req_id":"c8ad148b-2dd1-4bc7-a36a-3c4f5a91c80e","msg":"Command sample-command."}
-{"req_id":"99ec1407-0c4d-44e3-b3c8-c9aae59817a8","msg":"Command sample-command."}
-{"req_id":"5a3274c9-1c6f-4b52-9506-6ba89df9dcb1","msg":"Command sample-command."}
-{"req_id":"85e55556-cad9-4f83-96df-983fa90b43ff","msg":"Command sample-command."}
-{"req_id":"faf7b668-99ad-4282-84d1-752a4f48ed33","msg":"Command sample-command."}
+$ time seq 10 | xargs -n1 -P1 -I@ ./invoke.sh @
+1: Sun Jan 12 19:01:43 JST 2025
+{"req_id":"48bdfa53-fdc5-46ee-b8ae-83d1ff672431","msg":"Command sample-command."}
+1: Sun Jan 12 19:01:46 JST 2025
+2: Sun Jan 12 19:01:46 JST 2025
+{"req_id":"40d0c941-4867-4d33-9abd-b2c0b70100be","msg":"Command sample-command."}
+2: Sun Jan 12 19:01:49 JST 2025
+3: Sun Jan 12 19:01:49 JST 2025
+{"req_id":"ce8ff5a6-f04d-4998-b7d5-2d00a4984a73","msg":"Command sample-command."}
+3: Sun Jan 12 19:01:52 JST 2025
+4: Sun Jan 12 19:01:52 JST 2025
+{"req_id":"1151380c-7f3b-4ecc-adfd-33e1aea3e0ed","msg":"Command sample-command."}
+4: Sun Jan 12 19:01:55 JST 2025
+5: Sun Jan 12 19:01:55 JST 2025
+{"req_id":"dd346134-6ef6-472e-908d-5b95f1be5f08","msg":"Command sample-command."}
+5: Sun Jan 12 19:01:58 JST 2025
+6: Sun Jan 12 19:01:58 JST 2025
+{"req_id":"55c75868-3ef7-4f9a-841b-ef50c8271dc0","msg":"Command sample-command."}
+6: Sun Jan 12 19:02:01 JST 2025
+7: Sun Jan 12 19:02:01 JST 2025
+{"req_id":"47f1c686-1f03-486f-9e20-786bfea62763","msg":"Command sample-command."}
+7: Sun Jan 12 19:02:05 JST 2025
+8: Sun Jan 12 19:02:05 JST 2025
+{"req_id":"245e2d18-7d9d-462a-a0e9-611a9ebeb27c","msg":"Command sample-command."}
+8: Sun Jan 12 19:02:08 JST 2025
+9: Sun Jan 12 19:02:08 JST 2025
+{"req_id":"fbff07b1-6634-4efb-b7a6-26eb42d1cdde","msg":"Command sample-command."}
+9: Sun Jan 12 19:02:11 JST 2025
+10: Sun Jan 12 19:02:11 JST 2025
+{"req_id":"a4152239-51aa-4b90-a9f8-03bf85d27071","msg":"Command sample-command."}
+10: Sun Jan 12 19:02:14 JST 2025
 
-real    0m31.450s
-user    0m0.537s
-sys     0m0.242s
+real    0m31.105s
+user    0m0.420s
+sys     0m0.211s
 ```
 
 ## Prerequisites
