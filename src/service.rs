@@ -9,7 +9,7 @@ use tokio::runtime::Handle;
 use tower::service_fn;
 use tower::util::ServiceFn;
 
-pub(crate) fn create_handler<T>(client: Arc<T>) -> impl Handler
+pub(crate) fn create_service<T>(client: Arc<T>) -> impl Handler
 where
     T: Client,
 {

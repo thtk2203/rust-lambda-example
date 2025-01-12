@@ -15,14 +15,13 @@ async fn main() -> Result<(), Error> {
     let client = SampleClient::new();
     let shared_client = Arc::new(client);
 
-    let handler = create_handler(shared_client.clone());
-    let shared_handler = Arc::new(handler);
+    let service = create_service(shared_client.clone());
+    let shared_service = Arc::new(service);
 
-    let handle = |event| {
-        let handler = shared_handler.clone();
+    run(service_fn(|event| {
+        let service = shared_service.clone();
 
-        async move { handler.handle_event(event).await }
-    };
-
-    run(service_fn(handle)).await
+        async move { service.handle_event(event).await }
+    }))
+    .await
 }
