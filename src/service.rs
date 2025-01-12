@@ -9,27 +9,38 @@ use tokio::runtime::Handle;
 use tower::service_fn;
 use tower::util::ServiceFn;
 
-
-pub(crate) fn create_handler(client: Arc<dyn Client>) -> impl Handler {
-    SimpleHandler::new(client)
+pub(crate) fn create_handler<T>(client: Arc<T>) -> impl Handler
+where
+    T: Client,
+{
+    SimpleHandler::<T>::new(client)
 }
 
 pub(crate) trait Handler: Send + Sync {
-    async fn handle_event(&self, event: LambdaEvent<Value>)-> Result<OutgoingMessage, Error>;
+    async fn handle_event(&self, event: LambdaEvent<Value>) -> Result<OutgoingMessage, Error>;
 }
 
-pub(crate) struct SimpleHandler {
-    client: Arc<dyn Client>,
+pub(crate) struct SimpleHandler<T>
+where
+    T: Client,
+{
+    client: Arc<T>,
 }
 
-impl SimpleHandler {
-    pub fn new(client: Arc<dyn Client>) -> Self {
+impl<T> SimpleHandler<T>
+where
+    T: Client,
+{
+    pub fn new(client: Arc<T>) -> Self {
         Self { client }
     }
 }
 
-impl Handler for SimpleHandler {
-    async fn handle_event(&self, event: LambdaEvent<Value>) -> Result<OutgoingMessage, Error>{
+impl<T> Handler for SimpleHandler<T>
+where
+    T: Client,
+{
+    async fn handle_event(&self, event: LambdaEvent<Value>) -> Result<OutgoingMessage, Error> {
         function_handler(self.client.clone(), event).await
     }
 }
@@ -122,7 +133,7 @@ impl Handler for SimpleHandler {
 // }
 
 pub(crate) async fn run_handler(
-    client: Arc<dyn Client>,
+    client: Arc<impl Client>,
     event: LambdaEvent<Value>,
 ) -> Result<OutgoingMessage, Error> {
     function_handler(client, event).await
