@@ -2,6 +2,11 @@
 
 arc-example is a Rust project that implements an AWS Lambda function in Rust.
 
+## References
+
+* [完全理解: AWS Lambda with Go and Rust](https://zenn.dev/taiki45/articles/aws-lambda-with-go-and-rust)
+* [RustでAWS Lambda functionをいい感じに書く](https://speakerdeck.com/taiki45/rustdeaws-lambda-functionwoiigan-zinishu-ku?slide=10)
+
 ## Prerequisites
 
 - [Rust](https://www.rust-lang.org/tools/install)
