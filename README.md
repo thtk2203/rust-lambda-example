@@ -8,7 +8,7 @@ arc-example is a Rust project that implements an AWS Lambda function in Rust.
 * [RustでAWS Lambda functionをいい感じに書く](https://speakerdeck.com/taiki45/rustdeaws-lambda-functionwoiigan-zinishu-ku?slide=10)
 
 ## 挙動
-* 並列に呼び出しても、シーケンシャルに実行される
+* 並列に呼び出しても、シーケンシャルに（Queueに積まれて）実行される
   * 下記のように、ともに約`30`秒かかっている
   * `main.rs`で、`Arc::clone()`相当した結果も、参照数は増えていない（`2`のまま）
 
@@ -43,7 +43,8 @@ payload: IncomingMessage { command: "sample-command" }
 ```
 
 ### 並列に実行した場合
-`-P5`で`5`並列に呼び出し
+`-P5`で`5`並列に呼び出し。  
+Queueに積まれ、1つずつ処理されていることがわかる。
 ```shell
 $ time seq 10 | xargs -n1 -P5 -I@ ./invoke.sh @
 1: Sun Jan 12 19:01:08 JST 2025
