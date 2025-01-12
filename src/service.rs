@@ -1,5 +1,5 @@
-use crate::generic_handler::{function_handler, OutgoingMessage};
-use crate::sample_client::Client;
+use super::{function_handler, OutgoingMessage};
+use super::Client;
 use lambda_runtime::{Error, LambdaEvent};
 use serde_json::Value;
 use std::future::Future;
